@@ -16,73 +16,28 @@
     <!-- Socket.io -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 
-    <style>
-        form {
-            padding: 20px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            padding-right: 50px;
-        }
 
-        #messages {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            width: 100%;
-        }
-
-        #messages li {
-            padding: 5px 10px;
-
-        }
-
-        #messages li:nth-child(odd) {
-            background: #eee;
-        }
-    </style>
 </head>
 
 <body>
 
     <div class="container-fluid">
-        <div class="row">
-            <ul id="messages">
-
-            </ul>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-3">Tech Space Chat</h1>
+                <p class="lead">Select your room!</p>
+            </div>
         </div>
         <div class="row">
-            <div class="col-lg-6">
-                <form action="">
-                    <div class="input-group">
-                        <input id="m" autocomplete="off" type="text" class="form-control" placeholder="Type Message...">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="submit">Send!</button>
-                        </span>
-                    </div>
-                </form>
-            </div>
+            <ul class="list-group col">
+                <a href="/javascript" class="list-group-item list-group-item-action">JavaScript</a>
+                <a href="/cs" class="list-group-item list-group-item-action">C#</a>
+                <a href="/python" class="list-group-item list-group-item-action">Python</a>
+            </ul>
         </div>
     </div>
 
-    <script>
-        const socket = io.connect('http://localhost:3000');
 
-        $('form').submit(() => {
-            socket.emit('message', $('#m').val());
-            $('#m').val('');
-            return false;
-        });
-
-        socket.on('connect', () => {
-            // emits to server and client
-            socket.emit('message', 'user connected');
-        });
-
-        socket.on('message', (msg) => {
-            $('#messages').append($('<li>').text(msg));
-        })
-    </script>
 </body>
 
 </html>

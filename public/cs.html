@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- jQuery JS 3.1.0 -->
+    <title>Chatter/Tech/C#</title>
+    <!-- Bootstrap CSS 3.3.7 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Bootstrap JS 3.3.7 -->
+    <!-- jQuery JS 3.1.0 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Socket.io -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+
+    <style>
+        form {
+            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            padding-right: 50px;
+        }
+
+        #messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        #messages li {
+            padding: 5px 10px;
+
+        }
+
+        #messages li:nth-child(odd) {
+            background: #eee;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <ul id="messages">
+
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <form action="">
+                    <div class="input-group">
+                        <input id="m" autocomplete="off" type="text" class="form-control" placeholder="Type Message...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Send!</button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const room = 'c#';
+        const socket = io.connect('/tech');
+
+        $('form').submit(() => {
+            let msg = $('#m').val();
+            socket.emit('message', {
+                msg,
+                room
+            });
+            $('#m').val('');
+            return false;
+        });
+
+        socket.on('connect', () => {
+            // emits to server and client
+            socket.emit('join', {
+                room: room
+            });
+        });
+
+        socket.on('message', (msg) => {
+            $('#messages').append($('<li>').text(msg));
+        })
+    </script>
+</body>
+
+</html>
