@@ -3,7 +3,7 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const PORT = 3000;
 
-server.listen(PORT, () => {
+server.listen(process.env.PORT || PORT, () => {
     console.log(`Server is running on PORT: ${PORT}`);
 });
 
