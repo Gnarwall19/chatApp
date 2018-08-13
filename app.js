@@ -1,26 +1,38 @@
-const app = require('express')();
+const express = require('express');
+const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
+var path = require('path');
+const bodyParser = require('body-parser');
 const PORT = 3000;
 
 server.listen(process.env.PORT || PORT, () => {
     console.log(`Server is running on PORT: ${PORT}`);
 });
 
+//body parser middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
+app.use(express.static(__dirname + '/views'));
+app.use("/public", express.static(__dirname + '/public'));
+
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html');
+    res.sendFile('index.html');
 });
 
 app.get('/javascript', (req, res) => {
-    res.sendFile(__dirname + '/public/javascript.html');
+    res.sendFile(__dirname + '/views/javascript.html');
 });
 
 app.get('/cs', (req, res) => {
-    res.sendFile(__dirname + '/public/cs.html');
+    res.sendFile(__dirname + '/views/cs.html');
 });
 
 app.get('/python', (req, res) => {
-    res.sendFile(__dirname + '/public/python.html');
+    res.sendFile(__dirname + '/views/python.html');
 });
 
 // Tech NameSpace
